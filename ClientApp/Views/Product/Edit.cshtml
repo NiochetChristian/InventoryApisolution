@@ -1,0 +1,68 @@
+﻿@model InventoryClientAPI.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 style="text-align: center">Actualizar producto</h1>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <!-- Mensaje de Validación -->
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- ProductId (oculto) -->
+            <div class="form-group" style="display:none">
+                <input asp-for="ProductId" class="form-control" />
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+
+            <!-- Nombre del Producto -->
+            <div class="form-group mb-3">
+                <label asp-for="ProductName" class="form-label"></label>
+                <input asp-for="ProductName" class="form-control" placeholder="Ingresa el nombre del producto" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+
+            <!-- Tipo de Producción -->
+            <div class="form-group mb-3">
+                <label asp-for="ProductionType" class="form-label"></label>
+                <select asp-for="ProductionType" class="form-select">
+                    <option value="Elaborado a mano">Elaborado a mano</option>
+                    <option value="Elaborado a máquina">Elaborado a máquina</option>
+                    <option value="Elaborado a mano y máquina">Elaborado a mano y máquina</option>
+                </select>
+                <span asp-validation-for="ProductionType" class="text-danger"></span>
+            </div>
+
+            <!-- Estado del Producto -->
+            <div class="form-group mb-3">
+                <label asp-for="ProductStatus" class="form-label"></label>
+                <select asp-for="ProductStatus" class="form-select">
+                    <option value="Disponible">Disponible</option>
+                    <option value="Defectuoso">Defectuoso</option>
+                </select>
+                <span asp-validation-for="ProductStatus" class="text-danger"></span>
+            </div>
+
+            <!-- Fecha de Agregado -->
+            <div class="form-group mb-3" style="display: none">
+                <label asp-for="DateAdded" class="form-label"></label>
+                <input asp-for="DateAdded" class="form-control" type="date" />
+                <span asp-validation-for="DateAdded" class="text-danger"></span>
+            </div>
+
+            <!-- Botón para enviar -->
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

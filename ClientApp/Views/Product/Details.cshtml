@@ -1,0 +1,58 @@
+﻿@model InventoryClientAPI.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card shadow-sm p-4">
+    <h4 class="text-primary">Información del Producto</h4>
+    <hr />
+    <dl class="row">
+        <!-- Nombre del Producto -->
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+
+        <!-- Tipo de Producción -->
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ProductionType)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ProductionType)
+        </dd>
+
+        <!-- Estado del Producto -->
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ProductStatus)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ProductStatus)
+        </dd>
+
+        <!-- Fecha de Adición -->
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DateAdded)
+        </dd>
+
+        <!-- Última Actualización -->
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.LastUpdated)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LastUpdated)
+        </dd>
+    </dl>
+</div>
+
+<!-- Acciones -->
+<div class="mt-4 d-flex justify-content-between">
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ProductId }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Marcar como defectuoso", "MarkProductAsDefective", new { id = Model.ProductId }, new { @class = "btn btn-danger" })
+    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+</div>

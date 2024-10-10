@@ -1,0 +1,57 @@
+﻿@model InventoryClientAPI.Models.Product
+
+@{
+    ViewData["Title"] = "Creacion";
+}
+
+
+<div class="row justify-content-center">
+    <h1 style="text-align: center">Crear producto</h1>
+    <hr />
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <!-- Mensaje de Validación -->
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Nombre del Producto -->
+            <div class="form-group mb-3">
+                <label asp-for="ProductName" class="form-label"></label>
+                <input asp-for="ProductName" class="form-control" placeholder="Ingresa el nombre del producto" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+
+            <!-- Tipo de Producción -->
+            <div class="form-group mb-3">
+                <label asp-for="ProductionType" class="form-label"></label>
+                <select asp-for="ProductionType" class="form-select">
+                    <option value="">Seleccione el tipo de producción</option>
+                    <option value="Elaborado a mano">Elaborado a mano</option>
+                    <option value="Elaborado a máquina">Elaborado a máquina</option>
+                    <option value="Elaborado a mano y máquina">Elaborado a mano y máquina</option>
+                </select>
+                <span asp-validation-for="ProductionType" class="text-danger"></span>
+            </div>
+
+            <!-- Estado del Producto -->
+            <div class="form-group mb-3">
+                <label asp-for="ProductStatus" class="form-label"></label>
+                <select asp-for="ProductStatus" class="form-select">
+                    <option value="">Seleccione el estado del producto</option>
+                    <option value="Disponible">Disponible</option>
+                    <option value="Defectuoso">Defectuoso</option>
+                </select>
+                <span asp-validation-for="ProductStatus" class="text-danger"></span>
+            </div>
+
+            <!-- Botón para enviar -->
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
