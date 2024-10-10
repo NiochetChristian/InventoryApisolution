@@ -21,4 +21,5 @@
 * Cosas a acotar:
   - El proyecto no tiene sesiones, por eso implemente el JWT como unico valor la cual requiere las api y siendo este 'libre' para realizar la prueba tecnica
   - El tipo de autoenticacion del JWT es "Bearer"
-  - Todos los endpoint requieren del token a exceptuar el de 'api/token' 
+  - Todos los endpoint requieren del token a exceptuar el de 'api/token'
+  - Por defecto, la conexion esta como: "Server=;Database=InventoryDB;User Id=root;Password=;Charset=utf8mb4;" solo para agregar el servidor, el usuario y la contraseña
