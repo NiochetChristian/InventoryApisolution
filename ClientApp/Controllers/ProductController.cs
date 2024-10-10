@@ -16,12 +16,13 @@ namespace ClientApp.Controllers
             appSettings = _settings.Value;
         }
 
-        // GET: ProductController
+        #region Index&Detail
+
         public ActionResult Index()
         {
             ViewBag.ErrorMessage = TempData["ErrorMessage"];
             var http = new HttpClient();
-            var products = http.GetFromJsonAsync<List<Product>>("https://localhost:44330/api/Product/GetProducts").GetAwaiter();
+            var products = http.GetFromJsonAsync<List<Product>>(appSettings.ApiUrl + "api/Product/GetProducts").GetAwaiter();
             var result = products.GetResult();
             return View((result?.OrderByDescending(p => p.ProductStatus == "Disponible").ToList() ?? new()).AsEnumerable());
         }
@@ -29,13 +30,16 @@ namespace ClientApp.Controllers
         public ActionResult Details(string id)
         {
             var http = new HttpClient();
-            var products = http.GetFromJsonAsync<Product>("https://localhost:44330/api/Product/GetProduct/" + id).GetAwaiter();
+            var products = http.GetFromJsonAsync<Product>(appSettings.ApiUrl + "api/Product/GetProduct/" + id).GetAwaiter();
             var result = products.GetResult();
 
             return result == null
                 ? RedirectToAction("HandleError", "Product")
                 : View(result);
         }
+        #endregion
+
+        #region Create
 
         public ActionResult Create()
         {
@@ -68,7 +72,7 @@ namespace ClientApp.Controllers
 
                     var jsonContent = new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json");
 
-                    var response = client.PostAsync("https://localhost:44330/api/Product/AddProduct", jsonContent).GetAwaiter();
+                    var response = client.PostAsync(appSettings.ApiUrl + "api/Product/AddProduct", jsonContent).GetAwaiter();
                     var result = response.GetResult();
 
                     if (result.StatusCode == System.Net.HttpStatusCode.Created || result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -88,10 +92,13 @@ namespace ClientApp.Controllers
             }
         }
 
+        #endregion
+
+        #region Edit
         public ActionResult Edit(string id)
         {
             var http = new HttpClient();
-            var products = http.GetFromJsonAsync<Product>("https://localhost:44330/api/Product/GetProduct/" + id).GetAwaiter();
+            var products = http.GetFromJsonAsync<Product>(appSettings.ApiUrl + "api/Product/GetProduct/" + id).GetAwaiter();
             try
             {
                 var result = products.GetResult();
@@ -129,7 +136,7 @@ namespace ClientApp.Controllers
 
                     var jsonContent = new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json");
 
-                    var response = client.PutAsync("https://localhost:44330/api/Product/UpdateProduct", jsonContent).GetAwaiter();
+                    var response = client.PutAsync(appSettings.ApiUrl + "api/Product/UpdateProduct", jsonContent).GetAwaiter();
                     var result = response.GetResult();
 
                     if (result.StatusCode == System.Net.HttpStatusCode.Created || result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -147,14 +154,16 @@ namespace ClientApp.Controllers
                 return View();
             }
         }
+        #endregion
 
+        #region Delete&MarkDefective
         public ActionResult Delete(string id)
         {
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", appSettings.TokenBearer);
 
-                var response = client.DeleteAsync("https://localhost:44330/api/Product/DeleteProduct/" + id).GetAwaiter();
+                var response = client.DeleteAsync(appSettings.ApiUrl + "api/Product/DeleteProduct/" + id).GetAwaiter();
                 var result = response.GetResult();
 
                 if (result.StatusCode == System.Net.HttpStatusCode.Created || result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -174,7 +183,7 @@ namespace ClientApp.Controllers
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", appSettings.TokenBearer);
 
-                var response = client.PatchAsync("https://localhost:44330/api/Product/MarkProductAsDefective/" + id, null).GetAwaiter();
+                var response = client.PatchAsync(appSettings.ApiUrl + "api/Product/MarkProductAsDefective/" + id, null).GetAwaiter();
                 var result = response.GetResult();
 
                 if (result.StatusCode == System.Net.HttpStatusCode.Created || result.StatusCode == System.Net.HttpStatusCode.OK)
@@ -187,6 +196,7 @@ namespace ClientApp.Controllers
                 }
             }
         }
+        #endregion
 
         [Route("Product/HandleError")]
         public IActionResult HandleError()
