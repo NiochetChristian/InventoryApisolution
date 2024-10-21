@@ -21,9 +21,18 @@ namespace ClientApp.Controllers
         public ActionResult Index()
         {
             ViewBag.ErrorMessage = TempData["ErrorMessage"];
-            var http = new HttpClient();
-            var products = http.GetFromJsonAsync<List<Product>>(appSettings.ApiUrl + "api/Product/GetProducts").GetAwaiter();
-            var result = products.GetResult();
+            var result = new List<Product>();
+            try
+            {
+                var http = new HttpClient();
+                var products = http.GetFromJsonAsync<List<Product>>(appSettings.ApiUrl + "api/Product/GetProducts").GetAwaiter();
+                result = products.GetResult();
+            }
+            catch (Exception e)
+            {
+                result = new List<Product>();
+            }
+
             return View((result?.OrderByDescending(p => p.ProductStatus == "Disponible").ToList() ?? new()).AsEnumerable());
         }
 
